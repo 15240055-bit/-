@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今天衣服該穿什麼顏色？</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; padding: 32px 16px;
+    display: grid; place-items: center;
+    font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    color: #292536;
+    background: linear-gradient(135deg, #f7e9f0, #e9e9fa 55%, #e4f2ed);
+  }
+  .app {
+    width: min(100%, 680px); padding: 30px;
+    background: rgba(255,255,255,.94); border-radius: 24px;
+    box-shadow: 0 18px 55px rgba(65,45,85,.14);
+  }
+  h1 { margin: 0 0 8px; text-align: center; font-size: clamp(24px, 5vw, 32px); }
+  .subtitle { margin: 0 0 24px; text-align: center; color: #777184; }
+  label { display: block; margin-bottom: 9px; font-weight: 700; }
+  textarea {
+    display: block; width: 100%; min-height: 260px; resize: vertical;
+    padding: 14px; border: 1px solid #d9d3e2; border-radius: 12px;
+    font: inherit; line-height: 1.7; color: #373142; background: #fdfcff;
+  }
+  textarea:focus { outline: 3px solid #ded2f5; border-color: #9c83c5; }
+  .hint { margin: 8px 0 18px; color: #817b8c; font-size: 13px; }
+  button {
+    width: 100%; border: 0; border-radius: 14px; padding: 15px 20px;
+    color: white; background: linear-gradient(100deg, #9273bd, #c27eaa);
+    font: inherit; font-size: 18px; font-weight: 700; cursor: pointer;
+    transition: transform .15s, filter .15s;
+  }
+  button:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  button:active { transform: translateY(1px); }
+  .result {
+    margin-top: 22px; padding: 24px 16px; min-height: 130px;
+    display: grid; place-items: center; text-align: center;
+    border: 2px dashed #d8cce9; border-radius: 16px;
+    background: #faf7ff;
+  }
+  .result-label { color: #81758f; font-size: 14px; }
+  #resultText { margin-top: 8px; font-size: clamp(28px, 7vw, 42px); font-weight: 800; color: #7955a5; overflow-wrap: anywhere; }
+  #message { margin-top: 8px; color: #bd4560; font-weight: 600; }
+  .count { margin-top: 14px; text-align: right; color: #8b8494; font-size: 13px; }
+  @media (max-width: 480px) { .app { padding: 22px 18px; } }
+</style>
+</head>
+<body>
+<main class="app">
+  <h1>今天衣服該穿什麼顏色？</h1>
+  <p class="subtitle">讓幸運幫你決定今天的穿搭色彩 ✨</p>
+
+  <label for="options">顏色選項（每行一個）</label>
+  <textarea id="options" spellcheck="false">黑色
+昏灰
+灰色
+暗灰
+銀色
+亮灰色
+庚斯博羅灰
+白煙色
+白色
+雪色
+鐵灰色
+沙棕
+玫瑰褐
+亮珊瑚色
+印度紅
+褐色
+磚紅色
+栗色
+暗紅
+鮮紅
+紅色
+柿子橙
+霧玫瑰色
+鮭紅
+腥紅
+蕃茄紅
+暗鮭紅
+珊瑚紅
+橙紅
+亮鮭紅
+朱紅
+赭黃
+熱帶橙
+駝色
+杏黃
+椰褐
+海貝色
+鞍褐
+巧克力色
+燃橙
+陽橙
+粉撲桃色
+沙褐
+銅色
+亞麻色
+蜜橙
+秘魯色
+烏賊墨色
+赭色
+陶坯黃
+橘色
+暗橙
+古董白
+日曬色
+硬木色
+杏仁白
+那瓦霍白
+萬壽菊黃
+蕃木瓜色
+灰土色
+卡其色
+鹿皮鞋色
+舊蕾絲色
+小麥色
+桃色
+橙色
+花卉白
+金菊色
+暗金菊色
+咖啡色
+茉莉黃
+琥珀色
+玉米絲色
+鉻黃
+金色
+檸檬綢色
+亮卡其色
+灰金菊色
+暗卡其色
+含羞草黃
+奶油色
+象牙色
+米色
+亮黃
+亮金菊黃
+香檳黃
+芥末黃
+月黃
+橄欖色
+鮮黃
+黃色
+苔蘚綠
+亮檸檬綠
+橄欖軍服綠
+黃綠
+暗橄欖綠
+蘋果綠
+綠黃
+草綠
+草坪綠
+查特酒綠
+葉綠
+嫩綠
+明綠
+鈷綠
+蜜瓜綠
+暗海綠
+亮綠
+Pale Green（灰綠）
+常春藤綠
+森林綠
+檸檬綠
+暗綠
+綠色
+鮮綠色
+孔雀石綠
+薄荷綠
+青瓷綠
+Very Light Malachite Green（孔雀石綠）
+綠松石綠
+鉻綠
+蒼色
+海綠
+中海綠
+薄荷奶油色
+春綠
+孔雀綠
+中春綠色
+中碧藍色
+碧藍色
+青藍
+水藍
+土耳其藍
+綠松石色
+亮海綠
+中綠松石色
+亮青
+淺藍
+灰綠松石色
+暗岩灰
+鳧綠
+暗青
+青色
+水色
+暗綠松石色
+軍服藍
+孔雀藍
+粉藍
+濃藍
+亮藍
+灰藍
+薩克斯藍
+深天藍
+水手藍
+普魯士藍
+愛麗絲藍
+道奇藍
+礦藍
+湛藍
+韋奇伍德瓷藍
+亮鋼藍
+鈷藍
+灰丁寧藍
+鼠尾草藍
+暗粉藍
+藍寶石色
+國際奇連藍
+蔚藍
+品藍
+暗礦藍
+極濃海藍
+天青石藍
+幽靈白
+薰衣草紫
+長春花色（Lavender Blue）
+長春花色（Periwinkle）
+午夜藍
+藏青
+暗藍
+中藍
+藍色
+淺灰紫紅
+靛色
+暗岩藍
+鋼青色
+碧綠
+紫色
+岩藍
+矢車菊藍
+中岩藍
+紫羅蘭色
+岩灰
+亮岩灰
+藍紫
+暗洋紅
+梅紅色（Plum）
+天空藍
+淺天藍
+勃艮第酒紅
+宗主教
+中紫紅
+暗紫
+暗蘭紫
+紫水晶色
+中蘭紫
+薰衣草紫
+三色堇紫
+錦葵紫
+優品紫紅
+淡紫丁香色
+礦紫
+亮紫（Light Violet）
+紫藤色
+紫丁香色
+梅紅色（Medium Lavender Magenta）
+亮紫（Lavender Magenta）
+纈草紫
+木槿紫
+薊紫
+鐵線蓮紫
+洋紅
+品紅
+蘭紫
+淺珍珠紅
+陳玫紅
+淺玫瑰紅
+中青紫紅
+洋玫瑰紅
+玫瑰紅
+紅寶石色
+山茶紅
+深粉紅
+火鶴紅
+淺珊瑚紅
+暖粉紅
+尖晶石紅
+胭脂紅
+淺粉紅
+樞機紅
+薰衣草紫紅
+灰紫紅
+櫻桃紅
+淺鮭紅
+緋紅
+粉紅
+亮粉紅
+殼黃紅
+茜紅</textarea>
+  <p class="hint">可以自由新增或刪除顏色；空白行與完全相同的重複選項會自動略過。</p>
+
+  <button id="drawButton" type="button">幫我選</button>
+
+  <section class="result" aria-live="polite" aria-atomic="true">
+    <div>
+      <div class="result-label">今天推薦穿搭顏色</div>
+      <div id="resultText">準備好抽籤了嗎？</div>
+      <div id="message"></div>
+    </div>
+  </section>
+  <div class="count" id="count">目前有效選項：248 個</div>
+</main>
+
+<script>
+  const optionsInput = document.getElementById('options');
+  const resultText = document.getElementById('resultText');
+  const message = document.getElementById('message');
+  const count = document.getElementById('count');
+  const drawButton = document.getElementById('drawButton');
+
+  function getValidOptions() {
+    // 去除每行前後空白、空白行，並移除完全相同的重複選項。
+    // Set 會保留選項原本的順序。
+    return [...new Set(
+      optionsInput.value
+        .split(/\r?\n/)
+        .map(option => option.trim())
+        .filter(option => option.length > 0)
+    )];
+  }
+
+  function updateCount() {
+    count.textContent = `目前有效選項：${getValidOptions().length} 個`;
+  }
+
+  drawButton.addEventListener('click', () => {
+    const options = getValidOptions();
+    updateCount();
+    message.textContent = '';
+
+    if (options.length === 0) {
+      resultText.textContent = '';
+      message.textContent = '請先輸入至少一個選項';
+      return;
+    }
+
+    // 每個有效選項各占一個索引，因此中籤機率相同。
+    const randomIndex = Math.floor(Math.random() * options.length);
+    resultText.textContent = options[randomIndex];
+  });
+
+  optionsInput.addEventListener('input', updateCount);
+  updateCount();
+</script>
+</body>
+</html>
